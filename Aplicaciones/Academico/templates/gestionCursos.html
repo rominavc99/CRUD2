@@ -1,0 +1,110 @@
+{% extends "./base.html" %} {% block title %} Gestion de cursos {% endblock %}
+{% block body %}
+
+<div class="row">
+  <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 py-4">
+    <h2>Gestion de cursos</h2>
+
+    <div class="card">
+      <div class="card-body">
+        <form action="/registrarCurso/" method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <input
+              type="text"
+              id="txtCodigo"
+              name="txtCodigo"
+              class="form-control"
+              placeholder="Codigo de curso"
+              minlength="6"
+              maxlength="6"
+              required
+            />
+          </div>
+          <div class="form-group py-2">
+            <input
+              type="text"
+              id="txtNombre"
+              name="txtNombre"
+              class="form-control"
+              placeholder="Nombre del curso"
+              maxlength="50"
+              required
+            />
+          </div>
+
+          <div class="form-group py-2">
+            <input
+              type="text"
+              id="numCreditos"
+              name="numCreditos"
+              class="form-control"
+              minlength="1"
+              value="1"
+              required
+            />
+          </div>
+
+          <div class="form-check py-2">
+            <input
+              type="checkbox"
+              id="chkDisponible"
+              name="chkDisponible"
+              class="form-check-input"
+              value="true"
+            />
+            <label for="chkDisponible" class="form-check-label"
+              >Disponible</label
+            >
+          </div>
+
+          <div class="form-group d-grid gap-2 py-2">
+            <button type="submit" class="btn btn-primary btn-block text-white">
+              Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+    <div class="table-responsive py-2">
+      <h1>Lista de cursos</h1>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Codigo</th>
+            <th>Nombre</th>
+            <th>Creditos</th>
+            <th>Activo</th>
+            <th colspan="2">Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in cursos %}
+          <tr>
+            <td>{{ c.codigo }}</td>
+            <td>{{ c.nombre }}</td>
+            <td>{{ c.creditos }}</td>
+            <td>{% if c.activo %} Sí {% else %} No {% endif %}</td>
+            <td>
+              <a href="edicionCurso/{{ c.codigo }}" class="btn btn-info"
+                >Editar</a
+              >
+            </td>
+            <td>
+              <a
+                href="eliminacionCurso/{{ c.codigo }}"
+                class="btn btn-danger btn-eliminacion"
+                >Eliminar</a
+              >
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
